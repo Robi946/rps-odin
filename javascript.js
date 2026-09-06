@@ -37,39 +37,43 @@ function displayScore(para) {
     body.appendChild(para);
 }
 
+function displayString(string) {
+    singleResult.textContent = string;
+}
+
 function playRound(humanChoice, computerChoice) {
     switch (humanChoice) {
         case "rock":
             if (computerChoice === "rock") {
-                console.log("It's a tie!");
+                displayString("It's a tie!");
             } else if (computerChoice === "paper") {
                 incComputerScore();
-                console.log("Paper covers rock. You lose");
+                displayString("Paper covers rock. You lose");
             } else if (computerChoice === "scissors") {
                 incHumanScore();
-                console.log("Rock breaks the scissors. You win!");
+                displayString("Rock breaks the scissors. You win!");
             }
             break;
         case "paper":
             if (computerChoice === "rock") {
                 incHumanScore();
-                console.log("Paper covers rock. You win!");
+                displayString("Paper covers rock. You win!");
             } else if (computerChoice === "paper") {
-                console.log("It's a tie!");
+                displayString("It's a tie!");
             } else if (computerChoice === "scissors") {
                 incComputerScore();
-                console.log("Scissors cut throught the paper. You lose");
+                displayString("Scissors cut throught the paper. You lose");
             }
             break;
         case "scissors":
             if (computerChoice === "rock") {
                 incComputerScore();
-                console.log("Rock breaks the scissors. You lose");
+                displayString("Rock breaks the scissors. You lose");
             } else if (computerChoice === "paper") {
                 incHumanScore();
-                console.log("Scissors cut throught the paper. You win!");
+                displayString("Scissors cut throught the paper. You win!");
             } else if (computerChoice === "scissors") {
-                console.log("It's a tie!");
+                displayString("It's a tie!");
             }
             break;
     }
@@ -94,6 +98,9 @@ scissorsButton.addEventListener("click", () => {
 body.appendChild(rockButton);
 body.appendChild(paperButton);
 body.appendChild(scissorsButton);
+
+const singleResult = document.createElement("p");
+body.appendChild(singleResult);
 
 const para = document.createElement("p");
 document.addEventListener("scoreUpdated", () => {

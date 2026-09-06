@@ -37,72 +37,97 @@ function displayScore(para) {
     body.appendChild(para);
 }
 
-function displayString(string) {
-    singleResult.textContent = string;
+function displayResult(node, string) {
+    node.textContent = string;
+    body.appendChild(node);
+}
+
+function dispatchResultEvent(resultString) {
+    let event = new CustomEvent("resultShown", {
+        detail: { result: resultString },
+    });
+    document.dispatchEvent(event);
 }
 
 function playRound(humanChoice, computerChoice) {
     switch (humanChoice) {
         case "rock":
             if (computerChoice === "rock") {
-                displayString("It's a tie!");
+                dispatchResultEvent("It's a tie!");
             } else if (computerChoice === "paper") {
                 incComputerScore();
-                displayString("Paper covers rock. You lose");
+                dispatchResultEvent("Paper covers rock. You lose");
             } else if (computerChoice === "scissors") {
                 incHumanScore();
-                displayString("Rock breaks the scissors. You win!");
+                dispatchResultEvent("Rock breaks the scissors. You win!");
             }
             break;
         case "paper":
             if (computerChoice === "rock") {
                 incHumanScore();
-                displayString("Paper covers rock. You win!");
+                dispatchResultEvent("Paper covers rock. You win!");
             } else if (computerChoice === "paper") {
-                displayString("It's a tie!");
+                dispatchResultEvent("It's a tie!");
             } else if (computerChoice === "scissors") {
                 incComputerScore();
-                displayString("Scissors cut throught the paper. You lose");
+                dispatchResultEvent(
+                    "Scissors cut throught the paper. You lose"
+                );
             }
             break;
         case "scissors":
             if (computerChoice === "rock") {
                 incComputerScore();
-                displayString("Rock breaks the scissors. You lose");
+                dispatchResultEvent("Rock breaks the scissors. You lose");
             } else if (computerChoice === "paper") {
                 incHumanScore();
-                displayString("Scissors cut throught the paper. You win!");
+                dispatchResultEvent(
+                    "Scissors cut throught the paper. You win!"
+                );
             } else if (computerChoice === "scissors") {
-                displayString("It's a tie!");
+                dispatchResultEvent("It's a tie!");
             }
             break;
     }
     return;
 }
+
+function createButtons() {
+    const rockButton = document.createElement("button");
+    rockButton.textContent = "Play Rock";
+    const paperButton = document.createElement("button");
+    paperButton.textContent = "Play Paper";
+    const scissorsButton = document.createElement("button");
+    scissorsButton.textContent = "Play Scissors";
+
+    rockButton.addEventListener("click", () => {
+        playRound("rock", getComputerChoice());
+    });
+    paperButton.addEventListener("click", () => {
+        playRound("paper", getComputerChoice());
+    });
+    scissorsButton.addEventListener("click", () => {
+        playRound("scissors", getComputerChoice());
+    });
+
+    body.appendChild(rockButton);
+    body.appendChild(paperButton);
+    body.appendChild(scissorsButton);
+}
+
+function createParagpaphs() {
+    const singleResult = document.createElement("p");
+    document.addEventListener("resultShown", (event) => {
+        displayResult(singleResult, event.detail.result);
+    });
+
+    const para = document.createElement("p");
+    document.addEventListener("scoreUpdated", () => {
+        displayScore(para);
+    });
+}
+
 const body = document.querySelector("body");
 
-const rockButton = document.createElement("button");
-const paperButton = document.createElement("button");
-const scissorsButton = document.createElement("button");
-
-rockButton.addEventListener("click", () => {
-    playRound("rock", getComputerChoice());
-});
-paperButton.addEventListener("click", () => {
-    playRound("paper", getComputerChoice());
-});
-scissorsButton.addEventListener("click", () => {
-    playRound("scissors", getComputerChoice());
-});
-
-body.appendChild(rockButton);
-body.appendChild(paperButton);
-body.appendChild(scissorsButton);
-
-const singleResult = document.createElement("p");
-body.appendChild(singleResult);
-
-const para = document.createElement("p");
-document.addEventListener("scoreUpdated", () => {
-    displayScore(para);
-});
+createButtons();
+createParagpaphs();

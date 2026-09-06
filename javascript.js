@@ -55,6 +55,7 @@ function playRound(humanChoice, computerChoice) {
     }
     return;
 }
+const body = document.querySelector("body");
 
 const rockButton = document.createElement("button");
 const paperButton = document.createElement("button");
@@ -66,6 +67,10 @@ scissorsButton.addEventListener(
     "click",
     playRound("scissors", getComputerChoice())
 );
+
+body.appendChild(rockButton);
+body.appendChild(paperButton);
+body.appendChild(scissorsButton);
 
 // function playGame() {
 //     let humanScore = 0;
